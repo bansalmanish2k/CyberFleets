@@ -49,12 +49,12 @@ export default function Overlay({ carColor, setCarColor, activeModel, setActiveM
   return (
     <div style={{ width: '100vw' }}>
       
-      {/* Global Header (Fixed to screen) */}
-      <header style={{ position: 'fixed', top: 0, left: 0, width: '100vw', padding: '40px 60px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100 }} className="pointer-events-auto">
+      {/* Global Header */}
+      <header className="header-nav pointer-events-auto">
         <div>
-          <h2 style={{ fontSize: '24px', fontWeight: 800, letterSpacing: '0.2em' }}>CYBER<span style={{ color: carColor, transition: 'color 0.5s' }}>FLEET</span></h2>
+          <h2 className="header-logo">CYBER<span style={{ color: carColor, transition: 'color 0.5s' }}>FLEET</span></h2>
         </div>
-        <nav style={{ display: 'flex', gap: '30px', fontSize: '14px', fontWeight: 600, letterSpacing: '0.1em' }}>
+        <nav className="nav-links">
           <span 
             onClick={() => setActiveModel('gt')}
             style={{ cursor: 'pointer', transition: 'color 0.3s', color: activeModel === 'gt' ? carColor : 'inherit' }} 
@@ -79,38 +79,16 @@ export default function Overlay({ carColor, setCarColor, activeModel, setActiveM
         </nav>
       </header>
 
-      {/* Global Configurator (Fixed to right side) */}
-      <div 
-        className="pointer-events-auto glass-panel" 
-        style={{ 
-          position: 'fixed', 
-          right: '60px', 
-          top: '50%', 
-          transform: 'translateY(-50%)',
-          padding: '30px', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          gap: '20px', 
-          minWidth: '250px',
-          zIndex: 100 
-        }}
-      >
-        <h3 style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>PAINT CONFIGURATOR</h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+      {/* Global Configurator */}
+      <div className="configurator-panel glass-panel pointer-events-auto">
+        <h3 className="configurator-title">PAINT CONFIGURATOR</h3>
+        <div className="color-list">
           {COLORS.map((color) => (
             <div 
               key={color.hex}
               onClick={() => setCarColor(color.hex)}
-              style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '15px', 
-                cursor: 'pointer',
-                padding: '8px',
-                borderRadius: '8px',
-                backgroundColor: carColor === color.hex ? 'rgba(255,255,255,0.1)' : 'transparent',
-                transition: 'background-color 0.3s'
-              }}
+              className="color-swatch-wrapper"
+              style={{ backgroundColor: carColor === color.hex ? 'rgba(255,255,255,0.1)' : 'transparent' }}
             >
               <div style={{ 
                 width: '24px', 
@@ -118,9 +96,10 @@ export default function Overlay({ carColor, setCarColor, activeModel, setActiveM
                 borderRadius: '50%', 
                 backgroundColor: color.hex,
                 border: carColor === color.hex ? '2px solid white' : '2px solid transparent',
-                boxShadow: `0 0 10px ${color.hex}88`
+                boxShadow: `0 0 10px ${color.hex}88`,
+                flexShrink: 0
               }} />
-              <span style={{ 
+              <span className="color-swatch-name" style={{ 
                 fontSize: '14px', 
                 fontWeight: carColor === color.hex ? 700 : 400,
                 color: carColor === color.hex ? 'white' : 'var(--text-secondary)'
@@ -132,32 +111,24 @@ export default function Overlay({ carColor, setCarColor, activeModel, setActiveM
         </div>
       </div>
 
-      {/* PAGE 1: HERO (0vh - 100vh) */}
-      <section style={{ height: '100vh', display: 'flex', alignItems: 'center', padding: '0 60px' }} className="pointer-events-auto">
+      {/* PAGE 1: HERO */}
+      <section className="scroll-section pointer-events-auto">
         <motion.div 
           key={activeModel + 'hero'} 
           initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}
-          style={{ maxWidth: '500px', marginTop: '10vh' }}
+          className="hero-content"
         >
-          <h1 style={{ fontSize: '80px', lineHeight: 1, marginBottom: '20px', fontWeight: 700 }}>
-            {data.heroTitle}
-          </h1>
-          <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '40px', fontSize: '16px' }}>
-            {data.heroDesc}
-          </p>
+          <h1 className="hero-title">{data.heroTitle}</h1>
+          <p className="section-desc">{data.heroDesc}</p>
           <div style={{ fontSize: '12px', letterSpacing: '0.2em', opacity: 0.5 }}>SCROLL FOR SPECS ↓</div>
         </motion.div>
       </section>
 
-      {/* PAGE 2: PERFORMANCE (100vh - 200vh) */}
-      <section style={{ height: '100vh', display: 'flex', alignItems: 'center', padding: '0 60px' }} className="pointer-events-auto">
-        <div style={{ maxWidth: '400px' }}>
-          <h2 style={{ fontSize: '48px', lineHeight: 1, marginBottom: '20px', fontWeight: 700, color: carColor, transition: 'color 0.5s' }}>
-            {data.perfTitle}
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '40px', fontSize: '16px' }}>
-            {data.perfDesc}
-          </p>
+      {/* PAGE 2: PERFORMANCE */}
+      <section className="scroll-section pointer-events-auto">
+        <div className="section-content">
+          <h2 className="section-title" style={{ color: carColor }}>{data.perfTitle}</h2>
+          <p className="section-desc">{data.perfDesc}</p>
           <div className="glass-panel" style={{ display: 'flex', justifyContent: 'space-around', padding: '20px', borderRadius: '12px' }}>
             <SpecItem icon={<Gauge size={20} />} value={data.accel} label="0-60 MPH" color={carColor} />
             <SpecItem icon={<Wind size={20} />} value={data.speed} label="TOP SPEED" color={carColor} />
@@ -165,15 +136,11 @@ export default function Overlay({ carColor, setCarColor, activeModel, setActiveM
         </div>
       </section>
 
-      {/* PAGE 3: DESIGN (200vh - 300vh) */}
-      <section style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 60px' }} className="pointer-events-auto">
-        <div style={{ maxWidth: '400px', textAlign: 'center', marginLeft: '-20vw' }}>
-          <h2 style={{ fontSize: '48px', lineHeight: 1, marginBottom: '20px', fontWeight: 700, color: carColor, transition: 'color 0.5s' }}>
-            {data.designTitle}
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '40px', fontSize: '16px' }}>
-            {data.designDesc}
-          </p>
+      {/* PAGE 3: DESIGN */}
+      <section className="scroll-section design-section pointer-events-auto">
+        <div className="design-content">
+          <h2 className="section-title" style={{ color: carColor }}>{data.designTitle}</h2>
+          <p className="section-desc">{data.designDesc}</p>
         </div>
       </section>
 
