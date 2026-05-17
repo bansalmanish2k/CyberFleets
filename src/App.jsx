@@ -4,29 +4,30 @@ import { Loader, ScrollControls, Scroll, Environment, MeshReflectorMaterial } fr
 import CarModel from './components/CarModel';
 import SuvModel from './components/SuvModel';
 import HypercarModel from './components/HypercarModel';
+import Bmw11Model from './components/Bmw11Model';
 import Overlay from './components/Overlay';
 
 function App() {
-  const [carColor, setCarColor] = useState('#111111'); // Default Phantom Black
-  const [activeModel, setActiveModel] = useState('gt'); // 'gt', 'suv', or 'hypercar'
+  const themeColor = '#00ffff'; // Neon Cyan theme
+  const [activeModel, setActiveModel] = useState('gt'); // 'gt', 'suv', 'hypercar', or 'bmw11'
 
   return (
     <>
       <div className="fullscreen-canvas">
         <Canvas shadows camera={{ position: [5, 2, 5], fov: 45 }}>
           <Suspense fallback={null}>
-            <ScrollControls pages={3} damping={0.25}>
-              
+            <ScrollControls pages={7} damping={0.25}>
+
               {/* Global Lighting & Environment */}
               <color attach="background" args={['#050505']} />
               <Environment preset="city" />
               <ambientLight intensity={0.5} />
               <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} castShadow />
               <pointLight position={[-10, -10, -10]} intensity={1} />
-              
+
               <pointLight position={[0, 4, 0]} intensity={2} color="#ffffff" distance={10} />
-              <pointLight position={[3, 1, 3]} intensity={1} color={carColor} distance={8} />
-              <pointLight position={[-3, 1, -3]} intensity={1} color={carColor} distance={8} />
+              <pointLight position={[3, 1, 3]} intensity={1} color="#ffffff" distance={8} />
+              <pointLight position={[-3, 1, -3]} intensity={1} color="#ffffff" distance={8} />
 
               {/* Global Showroom Floor */}
               <mesh position={[0, -0.6, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
@@ -46,17 +47,17 @@ function App() {
               </mesh>
 
               {/* Conditional 3D Scene Elements */}
-              {activeModel === 'gt' && <CarModel carColor={carColor} />}
-              {activeModel === 'suv' && <SuvModel carColor={carColor} />}
-              {activeModel === 'hypercar' && <HypercarModel carColor={carColor} />}
+              {activeModel === 'gt' && <CarModel themeColor={themeColor} />}
+              {activeModel === 'suv' && <SuvModel themeColor={themeColor} />}
+              {activeModel === 'hypercar' && <HypercarModel themeColor={themeColor} />}
+              {activeModel === 'bmw11' && <Bmw11Model themeColor={themeColor} />}
 
               {/* HTML Overlay Elements */}
               <Scroll html style={{ width: '100%', height: '100%' }}>
-                <Overlay 
-                  carColor={carColor} 
-                  setCarColor={setCarColor} 
-                  activeModel={activeModel} 
-                  setActiveModel={setActiveModel} 
+                <Overlay
+                  themeColor={themeColor}
+                  activeModel={activeModel}
+                  setActiveModel={setActiveModel}
                 />
               </Scroll>
 
@@ -64,8 +65,8 @@ function App() {
           </Suspense>
         </Canvas>
       </div>
-      
-      <Loader 
+
+      <Loader
         containerStyles={{ background: '#050505' }}
         innerStyles={{ width: '300px' }}
         barStyles={{ background: '#ff3366' }}
